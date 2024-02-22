@@ -1,0 +1,52 @@
+----------------------------------
+1. Permissions (363)
+----------------------------------
+sudo -l {View user Permissions}
+:Sex  {Transform Vim into File Explorer}
+
+GTFOBins
+
+-----------------------------------
+2. OSInt (Open Source Intelligence)
+-----------------------------------
+Wayback Machine
+Google
+AlienVault
+Virus Total
+
+----------------------------------
+{Kettle}
+{rop vulnerability}
+Wizard Like & HorseTrack
+EBP (where to )
+EIP (where to go next)
+
+
+---------------------+
+STACK                |
+_____________________|
+                     |
+Program Storage      |
+EIP                  |
+EBP                  | 
+---------------------+
+
+
+CVEs
+(Remote Code Execution)
+
+Python Pwn Tools
+Ghidra
+
+wget?
+
+python2 -c "print(200 * "A")"
+
+cyclic string
+cyclic_find()
+
+
+Which is in little endian? (flip it over)
+{What is little endian}
+
+seq -- command
