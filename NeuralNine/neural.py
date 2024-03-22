@@ -2,6 +2,7 @@ import pytesseract
 from pytesseract import Output
 import PIL.Image
 import cv2
+import numpy as np
 
 # Page segmentation modes:
 #   0    Orientation and script detection (OSD) only.
@@ -27,28 +28,41 @@ import cv2
 #   3    Default, based on what is available.
 
 
-myconfig = r"--psm 7 --oem 3"
+myconfig = r"--psm 3 --oem 3"
 
 # text = pytesseract.image_to_string(PIL.Image.open("signs.jpeg"), config=myconfig)
 # print(text)
+# Read the image in grayscale
+image = cv2.imread('meter-img.jpeg', 0)
 
-image = cv2.imread("meter-img.jpeg")
-height, width, _ = image.shape
+# Apply Gaussian blur to the image to reduce noise and make edges smoother
+# gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+# img = cv2.Canny(image, 50, 60)
+blurred = cv2.GaussianBlur(image, (3, 5), 0)
 
-gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-img = cv2.Canny(gray_image, 50, 90)
+# Crop the image using the specified ROI
+# roi_coordinates = [50:200, 100:300]
+
+# Use morphological operations to close gaps and join edges
+kernel = np.ones((5, 5), np.uint8)
+closed = cv2.morphologyEx(blurred, cv2.MORPH_CLOSE, kernel)
+
+# Optionally, you can apply additional smoothing with Gaussian blur
+smoothed = cv2.GaussianBlur(closed, (5, 5), 0)
+cropped_image = smoothed[0:500, 320:1100]
+height, width = cropped_image.shape[:2]
 
 # ---------------
 # To put a box around each character
 
-boxes = pytesseract.image_to_boxes(img, config=myconfig)
+boxes = pytesseract.image_to_boxes(cropped_image, config=myconfig)
 print(boxes)
 
 for box in boxes.splitlines():
     box = box.split(" ")
-    img = cv2.rectangle(img, (int(box[1]), height - int(box[2])), (int(box[3]), height - int(box[4])), [0,255,0])
+    cropped_image = cv2.rectangle(cropped_image, (int(box[1]), height - int(box[2])), (int(box[3]), height - int(box[4])), [0,255,0])
 
-cv2.imshow("img", img);
+cv2.imshow("img", cropped_image);
 cv2.waitKey(0);
 
 

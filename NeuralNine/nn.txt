@@ -1,0 +1,2 @@
+tesseract logos.jpeg stdout --psm 11 --oem 3
+tesseract logos.jpeg stdout -l eng
